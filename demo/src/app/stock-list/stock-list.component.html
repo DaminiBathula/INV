@@ -1,0 +1,46 @@
+<div class="mat-elevation-z8">
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+  </mat-form-field>
+  <mat-table [dataSource]="dataSource" matSort>
+    
+    <ng-container matColumnDef="symbol">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Symbol <mat-icon matTooltip="Stock Symbol">info</mat-icon></mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <mat-icon>{{element.symbol | slice:0:1}}</mat-icon>
+        {{element.symbol}}
+      </mat-cell>
+    </ng-container>
+
+    
+    <ng-container matColumnDef="ltp">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Trade Price</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span [ngStyle]="{'color': element.pctChange > 0 ? 'green' : 'red'}">{{element.ltp}}</span>
+      </mat-cell>
+    </ng-container>
+
+    
+    <ng-container matColumnDef="pctChange">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Pct Change</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.pctChange}}</mat-cell>
+    </ng-container>
+
+    
+    <ng-container matColumnDef="intradayscans">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Intradayscans</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <ul>
+          <li *ngFor="let scan of element.intradayscans">{{ scan }}</li>
+        </ul>
+      </mat-cell>
+    </ng-container>
+
+    
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
